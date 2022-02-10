@@ -3,12 +3,71 @@
  */
 package programming.task1;
 
+import java.util.*;
+
+
+
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
+
+    public ArrayList<String> addPerson(ArrayList<String> addresses, String name, String address) {
+        Person person = new Person(name, address);
+        addresses.add(person.getName() + " : " + person.getAddress());
+        return addresses;
     }
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+    public ArrayList<String> deleteAddress(ArrayList<String> addresses, String name) {
+        addresses.removeIf(person -> person.split(" : ")[0].equals(name));
+        return addresses;
+    }
+
+    public ArrayList<String> changeAddress(ArrayList<String> addresses, String name, String newAddress) {
+        for (String person : addresses) {
+            if (person.split(" : ")[0].equals(name)) {
+                addresses.set(addresses.indexOf(person), name + " : " + newAddress);
+            }
+        }
+        return addresses;
+    }
+
+    public String getAddressByName(ArrayList<String> addresses, String name) {
+        String target = "";
+        for (String person : addresses) {
+            if (person.split(" : ")[0].equals(name)) {
+                target = person.split(" : ")[1];
+                break;
+            }
+        }
+        return target;
+    }
+
+    public ArrayList<String> getNamesByAddress(ArrayList<String> addresses, String street, String house) {
+        ArrayList<String> names = new ArrayList<>();
+        for (String person : addresses) {
+            if (person.split(" : ")[1].contains(street) || person.split(" : ")[1].contains(house)) {
+                names.add(person.split(" : ")[0]);
+            }
+        }
+        return names;
+    }
+}
+
+class Person {
+    String name;
+    String address;
+
+    public Person(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public Person(){
     }
 }

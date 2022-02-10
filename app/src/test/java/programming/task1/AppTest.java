@@ -4,11 +4,56 @@
 package programming.task1;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
+    @Test void appAddsAddresses() {
         App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+        ArrayList<String> start = new ArrayList<>(List.of(new String[]{}));
+        ArrayList<String> expected = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105"}));
+        assertEquals(expected, classUnderTest.addPerson(start, "Сидоров", "улица Кима, дом 60, квартира 105"));
+    }
+
+    @Test void appDeletesAddresses() {
+        App classUnderTest = new App();
+        ArrayList<String> start = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105", "Макарова : улица Наличная, дом 39, квартира 50"}));
+        ArrayList<String> expected = new ArrayList<>(List.of(new String[]{"Макарова : улица Наличная, дом 39, квартира 50"}));
+        assertEquals(expected, classUnderTest.deleteAddress(start, "Сидоров"));
+    }
+
+    @Test void appChangesAddresses() {
+        App classUnderTest = new App();
+        ArrayList<String> start = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105", "Макарова : улица Наличная, дом 39, квартира 50"}));
+        ArrayList<String> expected = new ArrayList<>(List.of(new String[]{"Сидоров : улица Мельникова, дом 1, квартира 5", "Макарова : улица Наличная, дом 39, квартира 50"}));
+        assertEquals(expected, classUnderTest.changeAddress(start, "Сидоров", "улица Мельникова, дом 1, квартира 5"));
+    }
+
+    @Test void appGetsAddressesByName() {
+        App classUnderTest = new App();
+        ArrayList<String> start = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105", "Потомский : улица Барочная, дом 12, квартира 418"}));
+        String expected = "улица Барочная, дом 12, квартира 418";
+        assertEquals(expected, classUnderTest.getAddressByName(start, "Потомский"));
+    }
+
+    @Test void appGetsNamesByAddress1() {
+        // for different streets
+        App classUnderTest = new App();
+        ArrayList<String> start = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105", "Потомский : улица Кима, дом 60, квартира 418",
+        "Анненко : улица Харченко, дом 4, квартира 200", "Михайлов : улица Харченко, дом 16, квартира 134"}));
+        ArrayList<String> expected = new ArrayList<>(List.of(new String[]{"Сидоров", "Потомский", "Анненко", "Михайлов"}));
+        assertEquals(expected, classUnderTest.getNamesByAddress(start, "улица Харченко", "улица Кима, дом 60"));
+    }
+
+    @Test void appGetsNamesByAddress2() {
+        // for one street or house
+        App classUnderTest = new App();
+        ArrayList<String> start = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105", "Потомский : улица Кима, дом 60, квартира 418",
+                "Анненко : улица Харченко, дом 4, квартира 200", "Михайлов : улица Харченко, дом 16, квартира 134"}));
+        ArrayList<String> expected = new ArrayList<>(List.of(new String[]{"Сидоров", "Потомский"}));
+        assertEquals(expected, classUnderTest.getNamesByAddress(start, "улица Кима", "улица Кима, дом 60"));
     }
 }
