@@ -16,6 +16,7 @@ class AppTest {
         App book = new App();
         assertTrue(book.addPerson("Сидоров", new Address("улица Шамшева", "40", "1")));
         assertFalse(book.addPerson("Сидоров", new Address("улица Шамшева", "40", "1")));
+        assertTrue(book.addPerson("Дачников", new Address("улица Песчаная", "102", "20")));
     }
 
     @Test void appDeletesAddresses() {
