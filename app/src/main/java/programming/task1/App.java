@@ -9,65 +9,84 @@ import java.util.*;
 
 public class App {
 
-    public ArrayList<String> addPerson(ArrayList<String> addresses, String name, String address) {
-        Person person = new Person(name, address);
-        addresses.add(person.getName() + " : " + person.getAddress());
-        return addresses;
+    private final Map<String, Address> addresses = new HashMap<>();
+
+   public boolean addPerson(String name, Address address) {
+       if (addresses.containsKey(name)) return false;
+       addresses.put(name, address);
+       return true;
+   }
+
+    public boolean deletePerson(String name) {
+        if (!addresses.containsKey(name)) return false;
+        addresses.remove(name);
+        return true;
     }
 
-    public ArrayList<String> deleteAddress(ArrayList<String> addresses, String name) {
-        addresses.removeIf(person -> person.split(" : ")[0].equals(name));
-        return addresses;
+    public boolean changeAddress(String name, Address newAddress) {
+        if (!addresses.containsKey(name)) return false;
+        addresses.replace(name, addresses.get(name), newAddress);
+        return true;
     }
 
-    public ArrayList<String> changeAddress(ArrayList<String> addresses, String name, String newAddress) {
-        for (String person : addresses) {
-            if (person.split(" : ")[0].equals(name)) {
-                addresses.set(addresses.indexOf(person), name + " : " + newAddress);
-            }
+    public Address getAddressByName(String name) {
+        for (String key : addresses.keySet()) {
+            if (key.equals(name)) return addresses.get(key);
         }
-        return addresses;
+        return null;
     }
 
-    public String getAddressByName(ArrayList<String> addresses, String name) {
-        String target = "";
-        for (String person : addresses) {
-            if (person.split(" : ")[0].equals(name)) {
-                target = person.split(" : ")[1];
-                break;
-            }
+    public List<String> getNamesByStreet(Address address) {
+        List<String> names = new ArrayList<>();
+        for (String key : addresses.keySet()) {
+            if (addresses.get(key).getStreet().equals(address.getStreet())) names.add(key);
         }
-        return target;
+        return names;
     }
 
-    public ArrayList<String> getNamesByAddress(ArrayList<String> addresses, String street, String house) {
-        ArrayList<String> names = new ArrayList<>();
-        for (String person : addresses) {
-            if (person.split(" : ")[1].contains(street) || person.split(" : ")[1].contains(house)) {
-                names.add(person.split(" : ")[0]);
-            }
+    public List<String> getNamesByHome(Address address) {
+        List<String> names = new ArrayList<>();
+        for (String key : addresses.keySet()) {
+            if (addresses.get(key).getStreet().equals(address.getStreet()) && addresses.get(key).getHome().equals(address.getHome())) names.add(key);
         }
         return names;
     }
 }
 
-class Person {
-    String name;
-    String address;
+class Address {
 
-    public Person(String name, String address) {
-        this.name = name;
-        this.address = address;
+    private String street;
+    private String home;
+    private String flat;
+
+    public Address(String street, String home, String flat) {
+        this.street = street;
+        this.home = home;
+        this.flat = flat;
     }
 
-    public String getName() {
-        return name;
+    public String getStreet() {
+        return street;
     }
 
-    public String getAddress() {
-        return address;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public Person(){
+    public String getHome() {
+        return home;
+    }
+
+    public void setHome(String home) {
+        this.home = home;
+    }
+
+    public String getFlat() {
+        return flat;
+    }
+
+    public void setFlat(String flat) {
+        this.flat = flat;
     }
 }
+

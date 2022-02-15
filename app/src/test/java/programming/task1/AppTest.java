@@ -3,6 +3,7 @@
  */
 package programming.task1;
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -12,48 +13,56 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
     @Test void appAddsAddresses() {
-        App classUnderTest = new App();
-        ArrayList<String> start = new ArrayList<>(List.of(new String[]{}));
-        ArrayList<String> expected = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105"}));
-        assertEquals(expected, classUnderTest.addPerson(start, "Сидоров", "улица Кима, дом 60, квартира 105"));
+        App book = new App();
+        assertTrue(book.addPerson("Сидоров", new Address("улица Шамшева", "40", "1")));
+        assertFalse(book.addPerson("Сидоров", new Address("улица Шамшева", "40", "1")));
     }
 
     @Test void appDeletesAddresses() {
-        App classUnderTest = new App();
-        ArrayList<String> start = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105", "Макарова : улица Наличная, дом 39, квартира 50"}));
-        ArrayList<String> expected = new ArrayList<>(List.of(new String[]{"Макарова : улица Наличная, дом 39, квартира 50"}));
-        assertEquals(expected, classUnderTest.deleteAddress(start, "Сидоров"));
+        App book = new App();
+        assertTrue(book.addPerson("Анненко", new Address("улица Харченко", "16", "200")));
+        assertTrue(book.addPerson("Харитонов", new Address("проспект Новикова", "3", "124")));
+        assertTrue(book.addPerson("Сидельников", new Address("улица Мушкина", "50", "6")));
+        assertFalse(book.deletePerson("Петров"));
+        assertFalse(book.deletePerson("Мешков"));
+        assertTrue(book.deletePerson("Харитонов"));
     }
 
     @Test void appChangesAddresses() {
-        App classUnderTest = new App();
-        ArrayList<String> start = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105", "Макарова : улица Наличная, дом 39, квартира 50"}));
-        ArrayList<String> expected = new ArrayList<>(List.of(new String[]{"Сидоров : улица Мельникова, дом 1, квартира 5", "Макарова : улица Наличная, дом 39, квартира 50"}));
-        assertEquals(expected, classUnderTest.changeAddress(start, "Сидоров", "улица Мельникова, дом 1, квартира 5"));
+        App book = new App();
+        assertTrue(book.addPerson("Анненко", new Address("улица Харченко", "16", "200")));
+        assertTrue(book.addPerson("Харитонов", new Address("проспект Новикова", "3", "124")));
+        assertFalse(book.changeAddress("Петров", new Address("улица Пушкина", "68", "7")));
+        assertTrue(book.changeAddress("Анненко", new Address("улица Наличная", "32", "1")));
     }
 
-    @Test void appGetsAddressesByName() {
-        App classUnderTest = new App();
-        ArrayList<String> start = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105", "Потомский : улица Барочная, дом 12, квартира 418"}));
-        String expected = "улица Барочная, дом 12, квартира 418";
-        assertEquals(expected, classUnderTest.getAddressByName(start, "Потомский"));
+      @Test void addressByName() {
+        App book = new App();
+        Address address1 = new Address("улица Харченко", "16", "200");
+        Address address2 = new Address("проспект Новикова", "3", "124");
+        assertTrue(book.addPerson("Анненко", address1));
+        assertTrue(book.addPerson("Харитонов", address2));
+        assertEquals(address1, book.getAddressByName("Анненко"));
+        assertEquals(address2, book.getAddressByName("Харитонов"));
     }
 
-    @Test void appGetsNamesByAddress1() {
-        // for different streets
-        App classUnderTest = new App();
-        ArrayList<String> start = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105", "Потомский : улица Кима, дом 60, квартира 418",
-        "Анненко : улица Харченко, дом 4, квартира 200", "Михайлов : улица Харченко, дом 16, квартира 134"}));
-        ArrayList<String> expected = new ArrayList<>(List.of(new String[]{"Сидоров", "Потомский", "Анненко", "Михайлов"}));
-        assertEquals(expected, classUnderTest.getNamesByAddress(start, "улица Харченко", "улица Кима, дом 60"));
+    @Test void namesByStreet() {
+        App book = new App();
+        assertTrue(book.addPerson("Анненко", new Address("улица Харченко", "16", "200")));
+        assertTrue(book.addPerson("Харитонов", new Address("проспект Новикова", "3", "124")));
+        assertTrue(book.addPerson("Михайлов", new Address("улица Харченко", "16", "4")));
+        assertTrue(book.addPerson("Вишняков", new Address("улица Харченко", "17", "101")));
+        Address address = new Address("улица Харченко", "17", "200");
+        assertEquals(List.of(new String[]{"Анненко", "Михайлов", "Вишняков"}), book.getNamesByStreet(address));
     }
 
-    @Test void appGetsNamesByAddress2() {
-        // for one street or house
-        App classUnderTest = new App();
-        ArrayList<String> start = new ArrayList<>(List.of(new String[]{"Сидоров : улица Кима, дом 60, квартира 105", "Потомский : улица Кима, дом 60, квартира 418",
-                "Анненко : улица Харченко, дом 4, квартира 200", "Михайлов : улица Харченко, дом 16, квартира 134"}));
-        ArrayList<String> expected = new ArrayList<>(List.of(new String[]{"Сидоров", "Потомский"}));
-        assertEquals(expected, classUnderTest.getNamesByAddress(start, "улица Кима", "улица Кима, дом 60"));
+    @Test void namesByHome() {
+        App book = new App();
+        assertTrue(book.addPerson("Анненко", new Address("улица Харченко", "16", "200")));
+        assertTrue(book.addPerson("Харитонов", new Address("проспект Новикова", "3", "124")));
+        assertTrue(book.addPerson("Михайлов", new Address("улица Харченко", "16", "4")));
+        assertTrue(book.addPerson("Вишняков", new Address("улица Харченко", "17", "101")));
+        Address address = new Address("улица Харченко", "16", "200");
+        assertEquals(List.of(new String[]{"Анненко", "Михайлов"}), book.getNamesByHome(address));
     }
 }
