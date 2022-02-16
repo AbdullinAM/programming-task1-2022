@@ -7,9 +7,9 @@ import java.util.*;
 
 
 
-public class App {
+public class AddressBook {
 
-    private final Map<String, Address> addresses = new HashMap<>();
+    private final Map<String, Address> addresses = new LinkedHashMap<>();
 
    public boolean addPerson(String name, Address address) {
        if (addresses.containsKey(name)) return false;
@@ -30,9 +30,7 @@ public class App {
     }
 
     public Address getAddressByName(String name) {
-        for (String key : addresses.keySet()) {
-            if (key.equals(name)) return addresses.get(key);
-        }
+        if (addresses.containsKey(name)) return addresses.get(name);
         return null;
     }
 
@@ -47,7 +45,7 @@ public class App {
     public List<String> getNamesByHome(Address address) {
         List<String> names = new ArrayList<>();
         for (String key : addresses.keySet()) {
-            if (addresses.get(key).getStreet().equals(address.getStreet()) && addresses.get(key).getHome().equals(address.getHome())) names.add(key);
+            if (addresses.get(key).getStreet().equals(address.getStreet()) && addresses.get(key).getHome() == address.getHome()) names.add(key);
         }
         return names;
     }
@@ -56,10 +54,10 @@ public class App {
 class Address {
 
     private String street;
-    private String home;
-    private String flat;
+    private int home;
+    private int flat;
 
-    public Address(String street, String home, String flat) {
+    public Address(String street, int home, int flat) {
         this.street = street;
         this.home = home;
         this.flat = flat;
@@ -73,19 +71,19 @@ class Address {
         this.street = street;
     }
 
-    public String getHome() {
+    public int getHome() {
         return home;
     }
 
-    public void setHome(String home) {
+    public void setHome(int home) {
         this.home = home;
     }
 
-    public String getFlat() {
+    public int getFlat() {
         return flat;
     }
 
-    public void setFlat(String flat) {
+    public void setFlat(int flat) {
         this.flat = flat;
     }
 }
