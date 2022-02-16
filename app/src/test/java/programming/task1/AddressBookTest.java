@@ -45,6 +45,7 @@ class AddressBookTest {
         assertTrue(book.addPerson("Харитонов", address2));
         assertEquals(address1, book.getAddressByName("Анненко"));
         assertEquals(address2, book.getAddressByName("Харитонов"));
+        assertNull(book.getAddressByName("Смоленцев"));
     }
 
     @Test void namesByStreet() {
