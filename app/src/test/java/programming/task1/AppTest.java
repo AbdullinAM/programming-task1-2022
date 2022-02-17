@@ -4,11 +4,39 @@
 package programming.task1;
 
 import org.junit.jupiter.api.Test;
+import programming.task1.studentGroup.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+    @Test 
+    void Task1() {
+        StudentGroup studentGroup = new StudentGroupImpl(1l);
+
+        Person noName = new Person("firstName", "lastName", "patronymic");
+        Person noName2 = new Person("firstName2", "lastName2", "patronymic2");
+
+        Subject math = new Subject("math");
+        Subject english = new Subject("english");
+        Subject programming = new Subject("programming");
+
+        Grade gradeInt = new Grade(5);
+        Grade gradeLong = new Grade(5L);
+        Grade gradeString = new Grade("5");
+
+        studentGroup.addPerson(noName);
+        studentGroup.addSubject(math);
+        studentGroup.addSubject(english);
+        studentGroup.addSubject(programming);
+
+        assertTrue(studentGroup.addGradeByPersonAndSubject(noName, math, gradeInt));
+        assertTrue(studentGroup.addGradeByPersonAndSubject(noName, english, gradeLong));
+        assertTrue(studentGroup.addGradeByPersonAndSubject(noName, programming, gradeString));
+        assertFalse(studentGroup.addGradeByPersonAndSubject(null, null, gradeString));
+        assertFalse(studentGroup.changeGradeByPersonAndSubject(noName2, programming, gradeInt));
+        assertTrue(studentGroup.removeGradeByPersonAndSubject(noName, programming));
+        assertTrue(studentGroup.changeGradeByPersonAndSubject(noName, programming, gradeLong));
+        assertTrue(studentGroup.addPerson(noName2));
+        assertFalse(studentGroup.addPerson(noName2));
     }
 }
