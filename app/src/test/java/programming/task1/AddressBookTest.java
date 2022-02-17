@@ -6,7 +6,7 @@ package programming.task1;
 import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,7 +55,7 @@ class AddressBookTest {
         assertTrue(book.addPerson("Михайлов", new Address("улица Харченко", 16, 4)));
         assertTrue(book.addPerson("Вишняков", new Address("улица Харченко", 17, 101)));
         Address address = new Address("улица Харченко", 17, 200);
-        List<String> expected = new ArrayList<>(List.of(new String[]{"Анненко", "Михайлов", "Вишняков"}));
+        List<String> expected = List.of("Анненко", "Михайлов", "Вишняков");
         assertEquals(expected, book.getNamesByStreet(address));
     }
 
@@ -66,9 +66,7 @@ class AddressBookTest {
         assertTrue(book.addPerson("Михайлов", new Address("улица Харченко", 16, 4)));
         assertTrue(book.addPerson("Вишняков", new Address("улица Харченко", 17, 101)));
         Address address = new Address("улица Харченко", 16, 200);
-        List<String> expected = new ArrayList<>();
-        expected.add("Анненко");
-        expected.add("Михайлов");
+        List<String> expected = List.of("Анненко", "Михайлов");
         assertEquals(expected, book.getNamesByHome(address));
     }
 }
