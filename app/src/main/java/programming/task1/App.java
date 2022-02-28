@@ -3,12 +3,79 @@
  */
 package programming.task1;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
+public final class App {
+    public static final class Table {
+        final char SIGN_X = 'X';
+        final char SIGN_ZERO = '0';
+        final char SIGN_EMPTY = '_';
+        public int row;
+        public int col;
+        char[][] table;
+        public Table(int row, int col) {
+            this.row = row;
+            this.col = col;
+            table = new char[row][col];
+        }
+
+        void zeroState() {
+            for(int i = 0; i < row; i++) {
+                for(int j = 0; j < col; j++) {
+                    table[i][j] = SIGN_EMPTY;
+                }
+            }
+        }
+
+        void actual() {
+            for(int i = 0; i < row; i++) {
+                for(int j = 0; j < col; j++) {
+                    System.out.print(table[i][j] + "  ");
+                }
+                System.out.println();
+            }
+        }
+        void addSign(int row, int col, int mark) {
+            if (mark == 1) table[row - 1][col - 1] = SIGN_X;
+            else table[row - 1][col - 1] = SIGN_ZERO;
+            actual();
+        }
+        void clear(int row, int col) {
+            table[row - 1][col - 1] = SIGN_EMPTY;
+        }
+        void maxLength(int mark) {
+            zeroState();
+            addSign(1,1,1);
+         //   addSign(2,1,1);
+            addSign(1,2,1);
+            addSign(2,3,1);
+        //    addSign(3,1,1);
+            int maxLength = 0;
+            int length = 0;
+            int numberCol = 0;
+            char sign;
+            if (mark == 0) sign = SIGN_ZERO;
+            else sign = SIGN_X;
+
+            for (int i = 0; i < row; i++) { //поиск по горизонтали
+                if (table[i][numberCol] == sign) {
+                    length++;
+                    if (length > maxLength) maxLength = length;
+                } else length = 0;
+
+                  numberCol++;
+            }
+            System.out.println(maxLength);
+
+        }
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        new App.Table(3,3).maxLength(1);
     }
 }
+/*
+Хранит квадратное поле для игры в крестики-нолики заданного в конструкторе
+размера.
+Методы: добавление крестика / нолика в заданную клетку, очистка заданной клетки,
+поиск самой длинной последовательности крестиков (непрерывной линии по
+горизонтали / вертикали / диагонали), то же для ноликов.
+ */
