@@ -3,21 +3,23 @@
  */
 package programming.task1;
 
-public final class App {
-    public static final class Table {
-        final char SIGN_X = 'X';
-        final char SIGN_ZERO = '0';
-        final char SIGN_EMPTY = '_';
-        public int row;
-        public int col;
-        char[][] table;
+
+    class Table {
+        private final String SIGN_X = "X";
+        private final String SIGN_ZERO = "0";
+        private final String SIGN_EMPTY = "·";
+        private final int row;
+        private final int col;
+        private final String[][] table;
         public Table(int row, int col) {
             this.row = row;
             this.col = col;
-            table = new char[row][col];
+            table = new String[row][col];
         }
 
-        void zeroState() {
+
+        //инициализация поля с пустыми клетками
+        public void zeroState() {
             for(int i = 0; i < row; i++) {
                 for(int j = 0; j < col; j++) {
                     table[i][j] = SIGN_EMPTY;
@@ -25,7 +27,9 @@ public final class App {
             }
         }
 
-        void actual() {
+
+        //отображение текущего состояния поля
+        public void actual() {
             for(int i = 0; i < row; i++) {
                 for(int j = 0; j < col; j++) {
                     System.out.print(table[i][j] + "  ");
@@ -33,49 +37,75 @@ public final class App {
                 System.out.println();
             }
         }
-        void addSign(int row, int col, int mark) {
+
+        //добавление крестика/нолика(метка, равная единице, добавляет крестик, равная нолику - нолик)
+        public void addSign(int row, int col, int mark) {
             if (mark == 1) table[row - 1][col - 1] = SIGN_X;
             else table[row - 1][col - 1] = SIGN_ZERO;
-            actual();
         }
-        void clear(int row, int col) {
+
+        //возвращает значение заданной клетки
+        public String getSign(int row, int col) {
+            return table[row - 1][col - 1];
+        }
+
+        //очистка заданной клетки
+        public void clear(int row, int col) {
             table[row - 1][col - 1] = SIGN_EMPTY;
         }
-        void maxLength(int mark) {
-            zeroState();
-            addSign(1,1,1);
-         //   addSign(2,1,1);
-            addSign(1,2,1);
-            addSign(2,3,1);
-        //    addSign(3,1,1);
+
+        //поиск максимальной последовательности крестиков/ноликов(аналогично)
+        public int maxLength(int mark) {
             int maxLength = 0;
             int length = 0;
-            int numberCol = 0;
-            char sign;
+            String sign;
             if (mark == 0) sign = SIGN_ZERO;
             else sign = SIGN_X;
 
-            for (int i = 0; i < row; i++) { //поиск по горизонтали
-                if (table[i][numberCol] == sign) {
-                    length++;
-                    if (length > maxLength) maxLength = length;
-                } else length = 0;
-
-                  numberCol++;
+            //поиск по горизонтали
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    if (table[i][j] == sign) {
+                        length++;
+                        if (length > maxLength) maxLength = length;
+                    } else length = 0;
+                }
             }
-            System.out.println(maxLength);
 
+            //поиск по вертикали
+            length = 0;
+            for (int i = 0; i < col; i++) {
+                for (int j = 0; j < row; j++) {
+                    if (table[j][i] == sign) {
+                        length++;
+                        if (length > maxLength) maxLength = length;
+                    } else length = 0;
+                }
+            }
+
+            //поиск по главной диагонали
+            length = 0;
+            for (int i = 0; i < row; i++) {
+                if (table[i][i] == sign) {
+                    length++;
+                } else {
+                    length = 0;
+                }
+                if (length > maxLength) maxLength = length;
+            }
+
+            //поиск по побочной диагонали
+            length = 0;
+            for (int i = 0; i < row; i++) {
+                if (table[i][row - i - 1] == sign) {
+                    length++;
+                } else {
+                    length = 0;
+                }
+                if (length > maxLength) maxLength = length;
+            }
+
+            return maxLength;
         }
-    }
-
-    public static void main(String[] args) {
-        new App.Table(3,3).maxLength(1);
-    }
 }
-/*
-Хранит квадратное поле для игры в крестики-нолики заданного в конструкторе
-размера.
-Методы: добавление крестика / нолика в заданную клетку, очистка заданной клетки,
-поиск самой длинной последовательности крестиков (непрерывной линии по
-горизонтали / вертикали / диагонали), то же для ноликов.
- */
+
