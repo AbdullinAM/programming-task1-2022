@@ -4,7 +4,9 @@
 package programming.task1;
 
 
-    class Table {
+import java.lang.reflect.Array;
+
+class Table {
         public enum Sign {
             SIGN_X("X"),
             SIGN_ZERO("0"),
@@ -38,14 +40,20 @@ package programming.task1;
             }
         }
 
-        //отображение текущего состояния поля
-        public void print() {
-            for(int i = 0; i < row; i++) {
-                for(int j = 0; j < col; j++) {
-                    System.out.print(table[i][j] + "  ");
+        private String tableString;
+        @Override
+        public String toString() {
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    if (tableString == null) {
+                        tableString = table[i][j] + "  ";
+                    } else {
+                        tableString += table[i][j] + "  ";
+                    }
                 }
-                System.out.println();
+                tableString += "\n";
             }
+            return tableString;
         }
 
         //добавление крестика/нолика(метка, равная единице, добавляет крестик, равная нолику - нолик)

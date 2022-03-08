@@ -34,16 +34,16 @@ class TableTest {
        table.addSign(3,3,Table.FieldsArguments.MARK_X);
        table.addSign(2,2,Table.FieldsArguments.MARK_0);
        table.addSign(3,1,Table.FieldsArguments.MARK_0);
-       table.print();
+       System.out.println(table.toString());
        assertEquals(2,table.maxLength(Table.FieldsArguments.MARK_X));
        assertEquals(3,table.maxLength(Table.FieldsArguments.MARK_0));
        table.clear(2,2);
-       table.print();
+        System.out.println(table.toString());
        assertEquals(1,table.maxLength(Table.FieldsArguments.MARK_0));
         table.addSign(2,2,Table.FieldsArguments.MARK_X);
         table.addSign(3,2,Table.FieldsArguments.MARK_X);
         table.clear(3,3);
-        table.print();
+        System.out.println(table.toString());
        assertEquals(3,table.maxLength(Table.FieldsArguments.MARK_X));
     }
 }
