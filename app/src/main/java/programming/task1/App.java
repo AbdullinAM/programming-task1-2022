@@ -5,9 +5,25 @@ package programming.task1;
 
 
     class Table {
-        private final String SIGN_X = "X";
-        private final String SIGN_ZERO = "0";
-        private final String SIGN_EMPTY = "·";
+        public enum Sign {
+            SIGN_X("X"),
+            SIGN_ZERO("0"),
+            SIGN_EMPTY("·");
+            private final String x;
+             Sign(String x) {
+                this.x = x;
+            }
+        }
+
+        public enum FieldsArguments {
+            MARK_X(1),
+            MARK_0(0);
+            private final int x;
+            FieldsArguments(int x) {
+                this.x = x;
+            }
+        }
+
         private final int row;
         private final int col;
         private final String[][] table;
@@ -15,21 +31,15 @@ package programming.task1;
             this.row = row;
             this.col = col;
             table = new String[row][col];
-        }
-
-
-        //инициализация поля с пустыми клетками
-        public void zeroState() {
             for(int i = 0; i < row; i++) {
                 for(int j = 0; j < col; j++) {
-                    table[i][j] = SIGN_EMPTY;
+                    table[i][j] = Sign.SIGN_EMPTY.x;
                 }
             }
         }
 
-
         //отображение текущего состояния поля
-        public void actual() {
+        public void print() {
             for(int i = 0; i < row; i++) {
                 for(int j = 0; j < col; j++) {
                     System.out.print(table[i][j] + "  ");
@@ -39,9 +49,9 @@ package programming.task1;
         }
 
         //добавление крестика/нолика(метка, равная единице, добавляет крестик, равная нолику - нолик)
-        public void addSign(int row, int col, int mark) {
-            if (mark == 1) table[row - 1][col - 1] = SIGN_X;
-            else table[row - 1][col - 1] = SIGN_ZERO;
+        public void addSign(int row, int col, FieldsArguments mark) {
+            if (mark.x == 1) table[row - 1][col - 1] = Sign.SIGN_X.x;
+            else table[row - 1][col - 1] = Sign.SIGN_ZERO.x;
         }
 
         //возвращает значение заданной клетки
@@ -51,16 +61,16 @@ package programming.task1;
 
         //очистка заданной клетки
         public void clear(int row, int col) {
-            table[row - 1][col - 1] = SIGN_EMPTY;
+            table[row - 1][col - 1] = Sign.SIGN_EMPTY.x;
         }
 
         //поиск максимальной последовательности крестиков/ноликов(аналогично)
-        public int maxLength(int mark) {
+        public int maxLength(FieldsArguments mark) {
             int maxLength = 0;
             int length = 0;
             String sign;
-            if (mark == 0) sign = SIGN_ZERO;
-            else sign = SIGN_X;
+            if (mark.x == 0) sign = Sign.SIGN_ZERO.x;
+            else sign = Sign.SIGN_X.x;
 
             //поиск по горизонтали
             for (int i = 0; i < row; i++) {

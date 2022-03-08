@@ -9,9 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class TableTest {
     @Test void appAddSign() {
         Table table = new Table(3,3);
-        table.zeroState();
-        table.addSign(3,3,1);
-        table.addSign(2,2,0);
+        table.addSign(3,3, Table.FieldsArguments.MARK_X);
+        table.addSign(2,2,Table.FieldsArguments.MARK_0);
         assertEquals("X", table.getSign(3,3));
         assertEquals("0", table.getSign(2,2));
         assertNotEquals("X", table.getSign(2,2));
@@ -19,9 +18,8 @@ class TableTest {
 
     @Test void appClear() {
         Table table = new Table(3,3);
-        table.zeroState();
-        table.addSign(1,1,1);
-        table.addSign(3,3,0);
+        table.addSign(1,1,Table.FieldsArguments.MARK_X);
+        table.addSign(3,3,Table.FieldsArguments.MARK_0);
         table.clear(3,3);
         assertEquals("·", table.getSign(3,3));
         assertEquals("·", table.getSign(2,2));
@@ -30,23 +28,22 @@ class TableTest {
 
     @Test void appMaxLength() {
        Table table = new Table(3,3);
-       table.zeroState();
-       table.addSign(1,1,1);
-       table.addSign(1,2,1);
-       table.addSign(1,3,0);
-       table.addSign(3,3,1);
-       table.addSign(2,2,0);
-       table.addSign(3,1,0);
-       table.actual();
-       assertEquals(2,table.maxLength(1));
-       assertEquals(3,table.maxLength(0));
+       table.addSign(1,1,Table.FieldsArguments.MARK_X);
+       table.addSign(1,2,Table.FieldsArguments.MARK_X);
+       table.addSign(1,3,Table.FieldsArguments.MARK_0);
+       table.addSign(3,3,Table.FieldsArguments.MARK_X);
+       table.addSign(2,2,Table.FieldsArguments.MARK_0);
+       table.addSign(3,1,Table.FieldsArguments.MARK_0);
+       table.print();
+       assertEquals(2,table.maxLength(Table.FieldsArguments.MARK_X));
+       assertEquals(3,table.maxLength(Table.FieldsArguments.MARK_0));
        table.clear(2,2);
-       table.actual();
-       assertEquals(1,table.maxLength(0));
-        table.addSign(2,2,1);
-        table.addSign(3,2,1);
+       table.print();
+       assertEquals(1,table.maxLength(Table.FieldsArguments.MARK_0));
+        table.addSign(2,2,Table.FieldsArguments.MARK_X);
+        table.addSign(3,2,Table.FieldsArguments.MARK_X);
         table.clear(3,3);
-        table.actual();
-       assertEquals(3,table.maxLength(1));
+        table.print();
+       assertEquals(3,table.maxLength(Table.FieldsArguments.MARK_X));
     }
 }
