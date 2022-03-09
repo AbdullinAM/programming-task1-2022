@@ -17,68 +17,51 @@ class Table {
             }
         }
 
-        public enum FieldsArguments {
-            MARK_X(1),
-            MARK_0(0);
-            private final int x;
-            FieldsArguments(int x) {
-                this.x = x;
-            }
-        }
-
         private final int row;
         private final int col;
-        private final String[][] table;
+        private final Sign[][] table;
         public Table(int row, int col) {
             this.row = row;
             this.col = col;
-            table = new String[row][col];
+            table = new Sign[row][col];
             for(int i = 0; i < row; i++) {
                 for(int j = 0; j < col; j++) {
-                    table[i][j] = Sign.SIGN_EMPTY.x;
+                    table[i][j] = Sign.SIGN_EMPTY;
                 }
             }
         }
 
-        private String tableString;
         @Override
         public String toString() {
+            final StringBuilder tableString = new StringBuilder();
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < col; j++) {
-                    if (tableString == null) {
-                        tableString = table[i][j] + "  ";
-                    } else {
-                        tableString += table[i][j] + "  ";
-                    }
+                    tableString.append(table[i][j].x).append("  ");
                 }
-                tableString += "\n";
+                tableString.append("\n");
             }
-            return tableString;
+            return tableString.toString();
         }
 
-        //добавление крестика/нолика(метка, равная единице, добавляет крестик, равная нолику - нолик)
-        public void addSign(int row, int col, FieldsArguments mark) {
-            if (mark.x == 1) table[row - 1][col - 1] = Sign.SIGN_X.x;
-            else table[row - 1][col - 1] = Sign.SIGN_ZERO.x;
+        //добавление крестика/нолика или очистка клетки
+        public void addSign(int row, int col, Sign mark) {
+            if (mark.equals(Sign.SIGN_X)) table[row - 1][col - 1] = Sign.SIGN_X;
+            if (mark.equals(Sign.SIGN_ZERO)) table[row - 1][col - 1] = Sign.SIGN_ZERO;
+            if (mark.equals(Sign.SIGN_EMPTY)) table[row - 1][col - 1] = Sign.SIGN_EMPTY;
         }
 
         //возвращает значение заданной клетки
         public String getSign(int row, int col) {
-            return table[row - 1][col - 1];
-        }
-
-        //очистка заданной клетки
-        public void clear(int row, int col) {
-            table[row - 1][col - 1] = Sign.SIGN_EMPTY.x;
+            return table[row - 1][col - 1].x;
         }
 
         //поиск максимальной последовательности крестиков/ноликов(аналогично)
-        public int maxLength(FieldsArguments mark) {
+        public int maxLength(Sign mark) {
             int maxLength = 0;
             int length = 0;
-            String sign;
-            if (mark.x == 0) sign = Sign.SIGN_ZERO.x;
-            else sign = Sign.SIGN_X.x;
+            Sign sign;
+            if (mark == Sign.SIGN_ZERO) sign = Sign.SIGN_ZERO;
+            else sign = Sign.SIGN_X;
 
             //поиск по горизонтали
             for (int i = 0; i < row; i++) {
