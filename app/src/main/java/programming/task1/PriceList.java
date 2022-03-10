@@ -7,46 +7,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PriceList {
-    private final Map<Integer, NameAndPrice> list = new HashMap<>();
+    private final Map<Integer, ProductDetails> priceList = new HashMap<>();
 
-    public Map<Integer, NameAndPrice> getList() {
-        return list;
-    }
-
-    public boolean addProduct(int code, NameAndPrice product) {
-        if (list.containsKey(code)) return false;
-        list.put(code, product);
+    public boolean addProduct(int code, ProductDetails product) {
+        if (priceList.containsKey(code)) return false;
+        priceList.put(code, product);
         return true;
     }
 
     public boolean replacePrice (int code, Double newPrice) {
-        if (!list.containsKey(code)) return false;
-        list.replace(code, new NameAndPrice(list.get(code).getName(), newPrice));
+        if (!priceList.containsKey(code)) return false;
+        priceList.replace(code, new ProductDetails(priceList.get(code).getName(), newPrice));
         return true;
     }
 
     public boolean replaceName (int code, String newName) {
-        if (!list.containsKey(code)) return false;
-        list.replace(code, new NameAndPrice(newName, list.get(code).getPrice()));
+        if (!priceList.containsKey(code)) return false;
+        priceList.replace(code, new ProductDetails(newName, priceList.get(code).getPrice()));
         return true;
     }
 
     public boolean deleteProduct (int code) {
-        if (!list.containsKey(code)) return false;
-        list.remove(code);
+        if (!priceList.containsKey(code)) return false;
+        priceList.remove(code);
         return true;
     }
 
     public Double findCost(int code, int quantity) {
-        return list.get(code).getPrice() * quantity;
+        return priceList.get(code).getPrice() * quantity;
+    }
+
+    public ProductDetails getValue (int code) {
+        return priceList.get(code);
     }
 }
 
-class NameAndPrice {
-    private String name;
-    private Double price;
+class ProductDetails {
+    private final String name;
+    private final Double price;
 
-    public NameAndPrice(String name, Double price) {
+    public ProductDetails(String name, Double price) {
         this.name = name;
         this.price = price;
     }
@@ -55,15 +55,7 @@ class NameAndPrice {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Double getPrice() {
         return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 }

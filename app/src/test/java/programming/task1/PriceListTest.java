@@ -9,49 +9,54 @@ import static org.junit.jupiter.api.Assertions.*;
 class PriceListTest {
     @Test
     void addProductTest() {
-        PriceList list = new PriceList();
-        assertTrue(list.addProduct(15, new NameAndPrice("Молоко", 95.40)));
-        assertTrue(list.addProduct(34, new NameAndPrice("Хлеб", 43.25)));
-        assertFalse(list.addProduct(15, new NameAndPrice("Молоко", 95.40)));
-        assertFalse(list.addProduct(34, new NameAndPrice("Яйца", 95.40)));
+        PriceList priceList = new PriceList();
+        assertTrue(priceList.addProduct(15, new ProductDetails("Молоко", 95.40)));
+        assertTrue(priceList.addProduct(34, new ProductDetails("Хлеб", 43.25)));
+        assertFalse(priceList.addProduct(15, new ProductDetails("Молоко", 95.40)));
+        assertFalse(priceList.addProduct(34, new ProductDetails("Яйца", 95.40)));
     }
 
     @Test
     void replacePriceTest() {
-        PriceList list = new PriceList();
-        list.addProduct(15, new NameAndPrice("Молоко", 95.40));
-        list.addProduct(34, new NameAndPrice("Хлеб", 43.25));
-        assertTrue(list.replacePrice(15, 93.0));
-        assertTrue(list.replacePrice(34, 93.0));
-        assertFalse(list.replacePrice(65, 93.0));
+        PriceList priceList = new PriceList();
+        priceList.addProduct(15, new ProductDetails("Молоко", 95.40));
+        priceList.addProduct(34, new ProductDetails("Хлеб", 43.25));
+        assertTrue(priceList.replacePrice(15, 93.0));
+        assertEquals(93.0, priceList.getValue(15).getPrice());
+        assertTrue(priceList.replacePrice(34, 93.0));
+        assertEquals(93.0, priceList.getValue(34).getPrice());
+        assertFalse(priceList.replacePrice(155, 93.0));
     }
 
     @Test
     void replaceNameTest() {
-        PriceList list = new PriceList();
-        list.addProduct(15, new NameAndPrice("Молоко", 95.40));
-        list.addProduct(34, new NameAndPrice("Хлеб", 43.25));
-        assertTrue(list.replaceName(15, "Кефир"));
-        assertTrue(list.replaceName(34, "Батон"));
-        assertFalse(list.replaceName(65, "Колбаса"));
+        PriceList priceList = new PriceList();
+        priceList.addProduct(15, new ProductDetails("Молоко", 95.40));
+        priceList.addProduct(34, new ProductDetails("Хлеб", 43.25));
+        assertTrue(priceList.replaceName(15, "Кефир"));
+        assertEquals("Кефир", priceList.getValue(15).getName());
+        assertTrue(priceList.replaceName(34, "Батон"));
+        assertEquals("Батон", priceList.getValue(34).getName());
+        assertFalse(priceList.replaceName(65, "Колбаса"));
     }
 
     @Test
     void deleteProductTest() {
         PriceList list = new PriceList();
-        list.addProduct(15, new NameAndPrice("Молоко", 95.40));
-        list.addProduct(34, new NameAndPrice("Хлеб", 43.25));
+        list.addProduct(15, new ProductDetails("Молоко", 95.40));
+        list.addProduct(34, new ProductDetails("Хлеб", 43.25));
         assertFalse(list.deleteProduct(56));
         assertTrue(list.deleteProduct(15));
+        assertFalse(list.deleteProduct(15));
         assertTrue(list.deleteProduct(34));
-        assertTrue(list.getList().isEmpty());
+        assertFalse(list.deleteProduct(34));
     }
 
     @Test
     void findCostTest() {
         PriceList list = new PriceList();
-        list.addProduct(15, new NameAndPrice("Молоко", 95.40));
-        list.addProduct(34, new NameAndPrice("Хлеб", 43.25));
+        list.addProduct(15, new ProductDetails("Молоко", 95.40));
+        list.addProduct(34, new ProductDetails("Хлеб", 43.25));
         assertEquals(858.60, list.findCost(15, 9));
         assertEquals(259.50, list.findCost(34, 6));
     }
