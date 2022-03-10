@@ -4,11 +4,57 @@
 package programming.task1;
 
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+class BookTest {
+
+    @Test
+    void deleteBookTest() {
+        Library library = new Library();
+        library.addBook("Ф4", new Book("Утром","БЕГИТ", "Анжуманя"));
+        assertTrue(library.deleteBook("Ф4"));
+        assertFalse(library.deleteBook("Ф4"));
+    }
+
+    @Test
+    void moveBookTest() {
+        Library library = new Library();
+        library.addBook("Д2", new Book("Да это жестко", "Демид", "ИзДома2"));
+        assertTrue(library.moveBook("Д2", "Д3"));
+        assertFalse(library.moveBook("Д2", "Д3"));
+    }
+
+    @Test
+    void changeBookTest(){
+        Library library = new Library();
+        Book book = new Book("Богдана", "тут", "не любят");
+        library.addBook("М6", new Book("Мак", "Уходит", "ИзРоссии"));
+        assertTrue(library.changeBook("М6", book));
+        assertEquals(book, library.findBookByCode("М6"));
+    }
+
+    @Test
+    void findBookTest() {
+        Library library = new Library();
+        Book leavesM = new Book("Мак", "Уходит", "ИзРоссии");
+        Book leavesK = new Book("КФЦ", "Уходит", "ИзРоссии");
+        Book house2 = new Book("Да это жестко", "Демид", "ИзДома2");
+        Book naSporte = new Book("ДелатьВ","Зале", "Анжуманя");
+        Book knigi = new Book("Не хочу искать книги", "по разным", "признакам");
+
+        library.addBook("К6", leavesM);
+        library.addBook("Д2", house2);
+        library.addBook("Б1", naSporte);
+        library.addBook("М6", leavesK);
+        library.addBook("Л8", knigi);
+
+        assertEquals(List.of(knigi), library.findBookByTitle("Не хочу искать книги"));
+        assertEquals(List.of(naSporte, house2), library.findBookByTitle("Д"));
+        assertEquals(List.of(leavesK, leavesM), library.findBookByAuthor("Уходит"));
+        assertEquals(List.of(leavesK, leavesM), library.findBookByGenre("ИзРоссии"));
     }
 }
