@@ -11,46 +11,50 @@ public final class TicTacToe {
 
     private final String[][] field;
 
-    private final String CROSS = "X";
-
-    private final String ZERO = "0";
-
-    private final String EMPTY = "*";
+    public enum Value{
+        CROSS("X"), ZERO("0"), EMPTY("*");
+        private final String value;
+        Value(String value) {
+            this.value = value;
+        }
+    }
 
     public TicTacToe(int size) {
         this.size = size;
         field = new String[size][size];
         for (int i = 0; i < size; i++)
             for(int j = 0; j < size; j++) {
-                field[i][j] = EMPTY;
+                field[i][j] = Value.EMPTY.value;
             }
     }
+
     //добавление нолика
     public void addZero(int row, int column) {
-        if (field[row - 1][column - 1].equals(EMPTY)) field[row - 1][column - 1] = ZERO;
+        if (field[row - 1][column - 1].equals(Value.EMPTY.value)) field[row - 1][column - 1] = Value.ZERO.value;
     }
 
     //добавление крестика
     public void addCross(int row, int column) {
-        if (field[row - 1][column - 1].equals(EMPTY)) field[row - 1][column - 1] = CROSS;
+        if (field[row - 1][column - 1].equals(Value.EMPTY.value)) field[row - 1][column - 1] = Value.CROSS.value;
     }
 
     //получение значения поля(для тестов)
     public String getValue(int row, int column) {
         return field[row - 1][column - 1];
     }
+
     //очистка поля
     public void clear(int row, int column) {
-        if (!field[row - 1][column - 1].equals(EMPTY)) field[row - 1][column - 1] = EMPTY;
+        if (!field[row - 1][column - 1].equals(Value.EMPTY.value)) field[row - 1][column - 1] = Value.EMPTY.value;
     }
 
     //поиск максимальной последовательности
-    public int maxSequence(String sign) {
+    public int maxSequence(Value sign) {
         int maxLength = -1;
         int length = 0;
         //главная диагональ
         for (int i = 0; i < size; i++) {
-            if (field[i][i].equals(sign)) length++;
+            if (field[i][i].equals(sign.value)) length++;
                     else length = 0;
             if (maxLength < length) maxLength = length;
         }
@@ -58,7 +62,7 @@ public final class TicTacToe {
         //побочная диагональ
         length = 0;
         for (int i = 0; i < size; i++) {
-            if (field[i][size - i - 1].equals(sign)) length++;
+            if (field[i][size - i - 1].equals(sign.value)) length++;
                     else length = 0;
             if (maxLength < length) maxLength = length;
         }
@@ -67,7 +71,7 @@ public final class TicTacToe {
         for (int j = 0; j < size; j++) {
             length = 0;
             for (int i = 0; i < size; i++) {
-                if (field[i][j].equals(sign)) length++;
+                if (field[i][j].equals(sign.value)) length++;
                         else length = 0;
                 if (maxLength < length) maxLength = length;
             }
@@ -77,7 +81,7 @@ public final class TicTacToe {
         for (int i = 0; i < size; i++) {
             length = 0;
             for (int j = 0; j < size; j++) {
-                if (field[i][j].equals(sign)) length++;
+                if (field[i][j].equals(sign.value)) length++;
                         else length = 0;
                 if (maxLength < length) maxLength = length;
             }

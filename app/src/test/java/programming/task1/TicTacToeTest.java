@@ -47,7 +47,7 @@ class TicTacToeTest {
         field.addCross(1, 3);
         field.addZero(2, 1);
         field.addCross(2, 3);
-        assertEquals(2, field.maxSequence("X"));
-        assertEquals(3, field.maxSequence("0"));
+        assertEquals(2, field.maxSequence(TicTacToe.Value.CROSS));
+        assertEquals(3, field.maxSequence(TicTacToe.Value.ZERO));
     }
 }
