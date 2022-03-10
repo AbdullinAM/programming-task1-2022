@@ -11,9 +11,9 @@ class TableTest {
         Table table = new Table(3,3);
         table.addSign(3,3, Table.Sign.SIGN_X);
         table.addSign(2,2,Table.Sign.SIGN_ZERO);
-        assertEquals("X", table.getSign(3,3));
-        assertEquals("0", table.getSign(2,2));
-        assertNotEquals("X", table.getSign(2,2));
+        assertEquals(Table.Sign.SIGN_X, table.getSign(3,3));
+        assertEquals(Table.Sign.SIGN_ZERO, table.getSign(2,2));
+        assertNotEquals(Table.Sign.SIGN_X, table.getSign(2,2));
     }
 
     @Test void appClear() {
@@ -21,9 +21,9 @@ class TableTest {
         table.addSign(1,1,Table.Sign.SIGN_X);
         table.addSign(3,3,Table.Sign.SIGN_ZERO);
         table.addSign(3,3,Table.Sign.SIGN_EMPTY);
-        assertEquals("·", table.getSign(3,3));
-        assertEquals("·", table.getSign(2,2));
-        assertNotEquals("·", table.getSign(1,1));
+        assertEquals(Table.Sign.SIGN_EMPTY, table.getSign(3,3));
+        assertEquals(Table.Sign.SIGN_EMPTY, table.getSign(2,2));
+        assertNotEquals(Table.Sign.SIGN_EMPTY, table.getSign(1,1));
     }
 
     @Test void appMaxLength() {

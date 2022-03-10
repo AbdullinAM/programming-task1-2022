@@ -4,7 +4,6 @@
 package programming.task1;
 
 
-import java.lang.reflect.Array;
 
 class Table {
         public enum Sign {
@@ -45,28 +44,23 @@ class Table {
 
         //добавление крестика/нолика или очистка клетки
         public void addSign(int row, int col, Sign mark) {
-            if (mark.equals(Sign.SIGN_X)) table[row - 1][col - 1] = Sign.SIGN_X;
-            if (mark.equals(Sign.SIGN_ZERO)) table[row - 1][col - 1] = Sign.SIGN_ZERO;
-            if (mark.equals(Sign.SIGN_EMPTY)) table[row - 1][col - 1] = Sign.SIGN_EMPTY;
+            table[row - 1][col - 1] = mark;
         }
 
         //возвращает значение заданной клетки
-        public String getSign(int row, int col) {
-            return table[row - 1][col - 1].x;
+        public Sign getSign(int row, int col) {
+            return table[row - 1][col - 1];
         }
 
         //поиск максимальной последовательности крестиков/ноликов(аналогично)
         public int maxLength(Sign mark) {
             int maxLength = 0;
             int length = 0;
-            Sign sign;
-            if (mark == Sign.SIGN_ZERO) sign = Sign.SIGN_ZERO;
-            else sign = Sign.SIGN_X;
 
             //поиск по горизонтали
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < col; j++) {
-                    if (table[i][j] == sign) {
+                    if (table[i][j] == mark) {
                         length++;
                         if (length > maxLength) maxLength = length;
                     } else length = 0;
@@ -77,7 +71,7 @@ class Table {
             length = 0;
             for (int i = 0; i < col; i++) {
                 for (int j = 0; j < row; j++) {
-                    if (table[j][i] == sign) {
+                    if (table[j][i] == mark) {
                         length++;
                         if (length > maxLength) maxLength = length;
                     } else length = 0;
@@ -87,7 +81,7 @@ class Table {
             //поиск по главной диагонали
             length = 0;
             for (int i = 0; i < row; i++) {
-                if (table[i][i] == sign) {
+                if (table[i][i] == mark) {
                     length++;
                 } else {
                     length = 0;
@@ -98,7 +92,7 @@ class Table {
             //поиск по побочной диагонали
             length = 0;
             for (int i = 0; i < row; i++) {
-                if (table[i][row - i - 1] == sign) {
+                if (table[i][row - i - 1] == mark) {
                     length++;
                 } else {
                     length = 0;
