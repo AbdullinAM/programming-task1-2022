@@ -4,11 +4,62 @@
 package programming.task1;
 
 import org.junit.jupiter.api.Test;
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
-    @Test void appHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+    PriceList classUnderTest = new PriceList();
+
+    @Test void addProductsTest() {
+        classUnderTest.addNewProduct("СамсунгА777", 305282, 23000);
+        classUnderTest.addNewProduct("Айфон2", 693947, 123000);
+        classUnderTest.addNewProduct("Нокиа3309", 343998, 1099.99);
+        assertThrows(IllegalArgumentException.class, () -> classUnderTest.addNewProduct("A", 1, -100));
+
+        assertEquals(classUnderTest, ExamplePricelists.getPriceListForAddProductsTest());
+    }
+
+    @Test void changeNameTest() {
+        classUnderTest.addNewProduct("СамсунгА777", 305282, 23000);
+        classUnderTest.addNewProduct("Айфон2", 693947, 123000);
+        classUnderTest.addNewProduct("Нокиа3309", 343998, 1099.99);
+
+        classUnderTest.changeName("Айфон2", "Iphone2");
+        classUnderTest.changeName(343998, "Нокиа 3310");
+        assertEquals(classUnderTest, ExamplePricelists.getPriceListForChangeNameTest());
+    }
+
+    @Test void setNewPrice() {
+        classUnderTest.addNewProduct("СамсунгА777", 305282, 23000);
+        classUnderTest.addNewProduct("Айфон2", 693947, 123000);
+        classUnderTest.addNewProduct("Нокиа3309", 343998, 1099.99);
+
+        classUnderTest.setNewPrice("Айфон2", 200000);
+        classUnderTest.setNewPrice(305282, 89000.50);
+        assertEquals(classUnderTest, ExamplePricelists.getPriceListForSetNewPriceTest());
+    }
+
+    @Test void deleteProductTest() {
+        classUnderTest.addNewProduct("Айфон2", 693947, 123000);
+        classUnderTest.addNewProduct("СамсунгА777", 305282, 23000);
+        classUnderTest.addNewProduct("СамсунгА777", 305282, 23000);
+        classUnderTest.addNewProduct("Нокиа3309", 343998, 1099.99);
+
+        classUnderTest.deleteProduct(693947);
+        classUnderTest.deleteAllProductsNamed("СамсунгА777");
+        assertThrows(NoSuchElementException.class, () -> classUnderTest.deleteProduct(693947));
+        assertEquals(ExamplePricelists.getPriceListForDeleteTest(), classUnderTest);
+    }
+
+    @Test void calculatePriceTest(){
+        classUnderTest.addNewProduct("Айфон2", 693947, 10000);
+        classUnderTest.addNewProduct("СамсунгА777", 305282, 5000);
+        classUnderTest.addNewProduct("Нокиа3309", 343998, 1099.99);
+
+        assertEquals(50000.0, classUnderTest.calculatePrice("Айфон2", 5 ));
+        assertEquals(5499.95, classUnderTest.calculatePrice(343998, 5 ));
+        assertThrows(NoSuchElementException.class, () ->
+                classUnderTest.calculatePrice(666, 5 ));
     }
 }
